@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Taikoshin.Framework\Taikoshin.Framework.csproj" />
+    <ProjectReference Include="..\Taikoshin.Resources\Taikoshin.Resources.csproj" />
+  </ItemGroup>
+
+</Project>
