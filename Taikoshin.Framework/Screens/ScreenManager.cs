@@ -11,6 +11,7 @@ namespace Taikoshin.Framework.Screens
     public class ScreenManager : IDrawable, IUpdatable, ILoadable
     {
         public bool IsLoaded { get; private set; }
+        public Rectangle DrawRect => m_game.Window.ClientBounds;
 
         public Queue<Screen> ScreenStack { get; private set; } = new Queue<Screen>();
 
@@ -42,11 +43,11 @@ namespace Taikoshin.Framework.Screens
             screen.Unload();
         }
 
-        public void Load()
+        public void Load(TaikoGameBase game)
         {
             foreach (Screen screen in ScreenStack)
             {
-                screen.Load();
+                screen.Load(game);
             }
 
             IsLoaded = true;
@@ -60,11 +61,11 @@ namespace Taikoshin.Framework.Screens
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch, Rectangle rect, GameTime gameTime)
         {
             foreach(Screen screen in ScreenStack)
             {
-                screen.Draw(spriteBatch, gameTime);
+                screen.Draw(spriteBatch, rect, gameTime);
             }
         }
 

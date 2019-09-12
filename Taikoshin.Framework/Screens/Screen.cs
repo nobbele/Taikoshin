@@ -16,13 +16,15 @@ namespace Taikoshin.Framework.Screens
         protected TaikoGameBase game { get; private set; }
         protected TextureStore textureStore { get; private set; }
 
-        IContainer<GameObject> m_childContainer = new Container<GameObject>();
+        public Rectangle DrawRect => game.Window.ClientBounds;
+
+        IContainer<GameObject> m_childContainer;
         List<IDisposable> m_disposables = new List<IDisposable>();
 
         public void Add(GameObject child)
         {
             m_childContainer.Add(child);
-            child.Load();
+            child.Load(game);
         }
 
         public void Contain(IDisposable disposable)
@@ -30,20 +32,24 @@ namespace Taikoshin.Framework.Screens
             m_disposables.Add(disposable);
         }
 
-        public void Setup(TaikoGameBase gameBase)
+        public void Setup(TaikoGameBase game)
         {
-            game = gameBase;
+            this.game = game;
+
+            m_childContainer = new Container();
             Contain(textureStore = new TextureStore(game.GraphicsDevice, Taikoshin.Resources.Textures.ResourceManager));
         }
 
-        public virtual void Load()
+        public virtual void Load(TaikoGameBase game)
         {
+            m_childContainer.Load(game);
+
             IsLoaded = true;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
         {
-            m_childContainer.Draw(spriteBatch, gameTime);
+            m_childContainer.Draw(spriteBatch, DrawRect, gameTime);
         }
 
         public virtual void Update(GameTime gameTime)

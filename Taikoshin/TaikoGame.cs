@@ -14,7 +14,6 @@ namespace Taikoshin
         protected override void Setup()
         {
             screenManager.SetScreen(new MainScreen());
-            screenManager.Push(new Overlay());
         }
     }
 }

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Taikoshin.Resources\Taikoshin.Resources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Objects\" />
+  </ItemGroup>
+
 </Project>

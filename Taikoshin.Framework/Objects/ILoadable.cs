@@ -3,7 +3,7 @@
     public interface ILoadable
     {
         bool IsLoaded { get; }
-        void Load();
+        void Load(TaikoGameBase game);
         void Unload();
     }
 }

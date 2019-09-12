@@ -39,7 +39,7 @@ namespace Taikoshin.Framework
 
             Fonts.Load();
 
-            screenManager.Load();
+            screenManager.Load(this);
 
             Load();
         }
@@ -55,7 +55,7 @@ namespace Taikoshin.Framework
 
             m_spriteBatch.Begin();
 
-            screenManager.Draw(m_spriteBatch, gameTime);
+            screenManager.Draw(m_spriteBatch, Window.ClientBounds, gameTime);
 
             m_spriteBatch.End();
         }

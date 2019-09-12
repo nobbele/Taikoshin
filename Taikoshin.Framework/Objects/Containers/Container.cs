@@ -5,14 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Taikoshin.Framework.Objects.Containers
 {
-    public class Container<T> : GameObject, IContainer<T> 
-        where T : GameObject
+    public class Container : GameObject, IContainer<GameObject>
     {
-        public IEnumerable<T> Children => m_children;
+        public IEnumerable<GameObject> Children => m_children;
+        List<GameObject> m_children { get; set; } = new List<GameObject>();
 
-        List<T> m_children { get; set; } = new List<T>();
-
-        public void Add(T child)
+        public void Add(GameObject child)
         {
             m_children.Add(child);
 #if DEBUG
@@ -20,21 +18,21 @@ namespace Taikoshin.Framework.Objects.Containers
 #endif
         }
 
-        public override void Load()
+        public override void Load(TaikoGameBase game)
         {
             foreach (ILoadable child in Children)
             {
-                child.Load();
+                child.Load(game);
             }
 
-            base.Load();
+            base.Load(game);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
             foreach(IDrawable child in Children)
             {
-                child.Draw(spriteBatch, gameTime);
+                child.Draw(spriteBatch, drawRect, gameTime);
             }
         }
 

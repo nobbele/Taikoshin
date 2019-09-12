@@ -5,6 +5,6 @@ namespace Taikoshin.Framework.Objects
 {
     public interface IDrawable
     {
-        void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+        void Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime);
     }
 }

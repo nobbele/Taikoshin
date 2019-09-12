@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Taikoshin.Framework.Resources;
 
 namespace Taikoshin.Framework.Objects
 {
     public class Sprite : GameObject
     {
-        public Vector2 Position { get; set; } = new Vector2(0, 0);
-        public Vector2 Size { get; set; } = new Vector2(1, 1);
-
         readonly TextureStore m_fontStore;
         readonly string m_textureName;
 
@@ -20,18 +18,14 @@ namespace Taikoshin.Framework.Objects
 
         Texture2D texture;
 
-        public override void Load()
+        public override void Load(TaikoGameBase game)
         {
             texture = m_fontStore[m_textureName];
 
-            base.Load();
+            base.Load(game);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            spriteBatch.Draw(texture, new Rectangle(Position.ToPoint(), (Size * 100).ToPoint()), Color.White);
-
-            base.Draw(spriteBatch, gameTime);
-        }
+        protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
+            => spriteBatch.Draw(texture, drawRect, Color.White);
     }
 }
