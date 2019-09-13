@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ManagedBass;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
@@ -38,6 +39,7 @@ namespace Taikoshin.Framework
             m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Fonts.Load();
+            Bass.Init();
 
             screenManager.Load(this);
 
@@ -68,6 +70,8 @@ namespace Taikoshin.Framework
         protected sealed override void UnloadContent()
         {
             Unload();
+
+            Bass.Free();
         }
 
         /// <summary>

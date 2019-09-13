@@ -8,6 +8,8 @@ using Taikoshin.Framework.Resources;
 using Microsoft.Xna.Framework;
 using Taikoshin.Framework;
 using Taikoshin.Framework.Objects.Containers;
+using ManagedBass;
+using Taikoshin.Framework.Audio;
 
 namespace Taikoshin.Screens
 {
@@ -17,6 +19,8 @@ namespace Taikoshin.Screens
         Sprite duck;
 
         Container container;
+
+        Track track;
 
         public override void Load(TaikoGameBase game)
         {
@@ -34,7 +38,25 @@ namespace Taikoshin.Screens
                 Size = DrawingSize.XMax,
             });
 
+            Contain(track = new Track("Honesty.mp3"));
+
+            Bass.GlobalStreamVolume = 1000;
+
             base.Load(game);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            Console.WriteLine($"Position: {track.Position}");
+
+            base.Update(gameTime);
+        }
+
+        public override void Start()
+        {
+            track.Play();
+
+            base.Start();
         }
     }
 }

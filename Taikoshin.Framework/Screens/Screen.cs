@@ -20,6 +20,7 @@ namespace Taikoshin.Framework.Screens
 
         IContainer<GameObject> m_childContainer;
         List<IDisposable> m_disposables = new List<IDisposable>();
+        List<ILoadable> m_loadables = new List<ILoadable>();
 
         public void Add(GameObject child)
         {
@@ -30,6 +31,11 @@ namespace Taikoshin.Framework.Screens
         public void Contain(IDisposable disposable)
         {
             m_disposables.Add(disposable);
+        }
+
+        public void Contain(ILoadable loadable)
+        {
+            m_loadables.Add(loadable);
         }
 
         public void Setup(TaikoGameBase game)
@@ -43,8 +49,17 @@ namespace Taikoshin.Framework.Screens
         public virtual void Load(TaikoGameBase game)
         {
             m_childContainer.Load(game);
+            for (int i = 0; i < m_loadables.Count; i++)
+                m_loadables[i].Load(game);
 
             IsLoaded = true;
+
+            Start();
+        }
+
+        public virtual void Start()
+        {
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
@@ -61,6 +76,12 @@ namespace Taikoshin.Framework.Screens
         {
             m_childContainer.Unload();
             m_childContainer.Clear();
+
+            for (int i = 0; i < m_loadables.Count; i++)
+                m_loadables[i].Unload();
+            m_loadables.Clear();
+
+            IsLoaded = false;
         }
     }
 }

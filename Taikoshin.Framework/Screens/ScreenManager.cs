@@ -35,6 +35,10 @@ namespace Taikoshin.Framework.Screens
         {
             ScreenStack.Enqueue(screen);
             screen.Setup(m_game);
+
+            // Load instantly if screen manager is already loaded
+            if (IsLoaded)
+                screen.Load(m_game);
         }
 
         public void Pop()
@@ -75,6 +79,8 @@ namespace Taikoshin.Framework.Screens
             {
                 stackedScreen.Unload();
             }
+
+            IsLoaded = false;
         }
     }
 }

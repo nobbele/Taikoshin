@@ -14,4 +14,17 @@
     <Folder Include="Objects\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ManagedBass" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Honesty.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

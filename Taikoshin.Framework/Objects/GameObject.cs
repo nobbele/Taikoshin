@@ -73,7 +73,7 @@ namespace Taikoshin.Framework.Objects
 
         public virtual void Unload()
         {
-
+            IsLoaded = false;
         }
     }
 
