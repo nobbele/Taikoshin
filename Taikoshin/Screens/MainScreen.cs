@@ -10,44 +10,39 @@ using Taikoshin.Framework;
 using Taikoshin.Framework.Objects.Containers;
 using ManagedBass;
 using Taikoshin.Framework.Audio;
+using Taikoshin.Objects;
 
 namespace Taikoshin.Screens
 {
     public class MainScreen : Screen
     {
-        Text text;
-        Sprite duck;
-
-        Container container;
+        HitObject hitObject;
+        Text positionText;
 
         Track track;
 
         public override void Load(TaikoGameBase game)
         {
-            Add(container = new Container()
-            {
-                MaximumSize = game.Window.ClientBounds.Size.ToVector2() / 2,
-            });
-            container.Add(text = new Text(Fonts.MenuFont, "あなたの名前は？ Hello Duck")
-            {
-                Position = new Vector2(0, 0),
-            });
-            container.Add(duck = new Sprite(textureStore, "Duck")
-            {
-                Position = new Vector2(0, 0),
-                Size = DrawingSize.XMax,
-            });
-
             Contain(track = new Track("Honesty.mp3"));
 
             Bass.GlobalStreamVolume = 1000;
+
+            Add(hitObject = new HitObject(textureStore, track, 10000)
+            {
+                Origin = new Vector2(0.5f, 0.5f),
+                MinimumSize = new Vector2(100, 100),
+                Size = DrawingSize.XMin,
+                ScalingMethod = ScalingMethod.KeepRatio,
+            });
+
+            Add(positionText = new Text(Fonts.MenuFont, "0"));
 
             base.Load(game);
         }
 
         public override void Update(GameTime gameTime)
         {
-            Console.WriteLine($"Position: {track.Position}");
+            positionText.Content = $"Position: {track.Position}";
 
             base.Update(gameTime);
         }

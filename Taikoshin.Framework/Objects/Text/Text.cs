@@ -6,7 +6,7 @@ namespace Taikoshin.Framework.Objects.Text
 {
     public class Text : GameObject
     {
-        public string m_content;
+        public string Content;
         readonly DynamicSpriteFont m_font;
 
         readonly Vector2 contentSize;
@@ -14,14 +14,14 @@ namespace Taikoshin.Framework.Objects.Text
         public Text(DynamicSpriteFont font, string text)
         {
             m_font = font;
-            m_content = text;
+            Content = text;
 
             contentSize = font.MeasureString(text);
         }
 
         protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
-            spriteBatch.DrawString(m_font, m_content, drawRect.Location.ToVector2(), Color.White);
+            spriteBatch.DrawString(m_font, Content, drawRect.Location.ToVector2(), Color.White);
         }
     }
 }

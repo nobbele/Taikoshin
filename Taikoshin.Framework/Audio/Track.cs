@@ -12,7 +12,7 @@ namespace Taikoshin.Framework.Audio
 
         public string TrackName { get; private set; }
 
-        public double Position => Bass.ChannelBytes2Seconds(m_handle, Bass.ChannelGetPosition(m_handle)) * 1000;
+        public float Position => (float)Bass.ChannelBytes2Seconds(m_handle, Bass.ChannelGetPosition(m_handle)) * 1000;
 
         private int m_handle = -1;
 

@@ -15,6 +15,7 @@ namespace Taikoshin.Framework.Objects
         public Vector2 MaximumSize { get; set; } = new Vector2(-1, -1);
         public DrawingSize Size { get; set; } = DrawingSize.XMax;
         public ScalingMethod ScalingMethod { get; set; } = ScalingMethod.KeepRatio;
+        public Vector2 Origin { get; set; } = new Vector2(0, 0);
 
         protected virtual float ratio { get; } = 1;
 
@@ -28,15 +29,15 @@ namespace Taikoshin.Framework.Objects
             IsLoaded = true;
         }
 
-        public virtual Rectangle CalculateDrawRect(Rectangle parent)
+        protected Rectangle GetDefaultRect(Rectangle parent)
         {
             Rectangle drawRect = new Rectangle(Position.ToPoint(), new Point(0, 0));
 
-            if (Size.HasFlag(DrawingSize.X))
+            if (Size.HasFlag(DrawingSize._X))
             {
-                if (Size.HasFlag(DrawingSize.Min))
+                if (Size.HasFlag(DrawingSize._Min))
                     drawRect.Width = (int)MinimumSize.X;
-                if (Size.HasFlag(DrawingSize.Max))
+                if (Size.HasFlag(DrawingSize._Max))
                     drawRect.Width = parent.Size.X;
 
                 if (drawRect.Width > MaximumSize.X)
@@ -51,15 +52,16 @@ namespace Taikoshin.Framework.Objects
                 }
             }
 
+            drawRect.Location = (drawRect.Size.ToVector2() * -Origin).ToPoint();
+
             return drawRect;
         }
 
-        void IDrawable.Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
-        {
-            Rectangle drawRect = CalculateDrawRect(parent);
+        public virtual Rectangle CalculateDrawRect(Rectangle parent)
+            => GetDefaultRect(parent);
 
-            Draw(spriteBatch, drawRect, gameTime);
-        }
+        void IDrawable.Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
+            => Draw(spriteBatch, CalculateDrawRect(parent), gameTime);
 
         protected virtual void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
@@ -81,12 +83,12 @@ namespace Taikoshin.Framework.Objects
     public enum DrawingSize
     {
         InvalidSize = 0,
-        X = 1 << 0,
-        Y = 1 << 1,
-        Max = 1 << 2,
-        Min = 1 << 3,
-        XMax = Max | X,
-        XMin = Min | X,
+        _X = 1 << 0,
+        _Y = 1 << 1,
+        _Max = 1 << 2,
+        _Min = 1 << 3,
+        XMax = _Max | _X,
+        XMin = _Min | _X,
     }
     public enum ScalingMethod
     {
