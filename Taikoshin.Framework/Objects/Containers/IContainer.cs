@@ -8,6 +8,7 @@ namespace Taikoshin.Framework.Objects.Containers
         IEnumerable<T> Children { get; }
 
         void Add(T child);
+        void Remove(T child);
         void Clear();
     }
 }

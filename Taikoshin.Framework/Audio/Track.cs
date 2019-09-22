@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Taikoshin.Framework.Objects;
+using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Audio
 {
@@ -21,7 +22,7 @@ namespace Taikoshin.Framework.Audio
             TrackName = trackName;
         }
 
-        public void Load(TaikoGameBase game)
+        public void Load(TaikoGameBase game, Screen screen)
         {
             m_handle = Bass.CreateStream(TrackName);
 

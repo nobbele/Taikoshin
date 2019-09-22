@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using Taikoshin.Framework.Objects;
@@ -25,7 +26,6 @@ namespace Taikoshin.Framework.Screens
         public void Add(GameObject child)
         {
             m_childContainer.Add(child);
-            child.Load(game);
         }
 
         public void Contain(IDisposable disposable)
@@ -42,15 +42,15 @@ namespace Taikoshin.Framework.Screens
         {
             this.game = game;
 
-            m_childContainer = new Container();
+            m_childContainer = new Container(this);
             Contain(textureStore = new TextureStore(game.GraphicsDevice, Taikoshin.Resources.Textures.ResourceManager));
         }
 
-        public virtual void Load(TaikoGameBase game)
+        public virtual void Load(TaikoGameBase game, Screen screen)
         {
-            m_childContainer.Load(game);
+            m_childContainer.Load(game, screen);
             for (int i = 0; i < m_loadables.Count; i++)
-                m_loadables[i].Load(game);
+                m_loadables[i].Load(game, screen);
 
             IsLoaded = true;
 
@@ -70,6 +70,11 @@ namespace Taikoshin.Framework.Screens
         public virtual void Update(GameTime gameTime)
         {
             m_childContainer.Update(gameTime);
+        }
+
+        public void Remove(GameObject child)
+        {
+            m_childContainer.Remove(child);
         }
 
         public virtual void Unload()

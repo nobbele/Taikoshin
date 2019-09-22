@@ -14,20 +14,19 @@ using Taikoshin.Objects;
 
 namespace Taikoshin.Screens
 {
-    public class MainScreen : Screen
+    public class GameplayScreen : Screen
     {
-        HitObject hitObject;
         Text positionText;
 
         Track track;
 
-        public override void Load(TaikoGameBase game)
+        public override void Load(TaikoGameBase game, Screen screen)
         {
             Contain(track = new Track("Honesty.mp3"));
 
             Bass.GlobalStreamVolume = 1000;
 
-            Add(hitObject = new HitObject(textureStore, track, 10000)
+            Add(new HitObject(textureStore, track, 5250, HitObjectType.Don)
             {
                 Origin = new Vector2(0.5f, 0.5f),
                 MinimumSize = new Vector2(100, 100),
@@ -37,7 +36,7 @@ namespace Taikoshin.Screens
 
             Add(positionText = new Text(Fonts.MenuFont, "0"));
 
-            base.Load(game);
+            base.Load(game, screen);
         }
 
         public override void Update(GameTime gameTime)

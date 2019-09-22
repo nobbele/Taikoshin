@@ -1,6 +1,7 @@
 ﻿using ManagedBass;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Taikoshin.Framework.Input;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
 
@@ -10,6 +11,8 @@ namespace Taikoshin.Framework
     {
         readonly GraphicsDeviceManager m_graphics;
         SpriteBatch m_spriteBatch;
+
+        public InputManager InputManager { get; set; }
 
         protected ScreenManager screenManager { get; set; }
 
@@ -28,6 +31,7 @@ namespace Taikoshin.Framework
         protected sealed override void Initialize()
         {
             screenManager = new ScreenManager(this);
+            InputManager = new InputManager();
 
             Setup();
 
@@ -41,7 +45,7 @@ namespace Taikoshin.Framework
             Fonts.Load();
             Bass.Init();
 
-            screenManager.Load(this);
+            screenManager.Load(this, null);
 
             Load();
         }
@@ -64,6 +68,7 @@ namespace Taikoshin.Framework
 
         protected sealed override void Update(GameTime gameTime)
         {
+            InputManager.Update(gameTime);
             screenManager.Update(gameTime);
         }
 

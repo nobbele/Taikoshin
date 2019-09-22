@@ -38,7 +38,7 @@ namespace Taikoshin.Framework.Screens
 
             // Load instantly if screen manager is already loaded
             if (IsLoaded)
-                screen.Load(m_game);
+                screen.Load(m_game, screen);
         }
 
         public void Pop()
@@ -47,11 +47,11 @@ namespace Taikoshin.Framework.Screens
             screen.Unload();
         }
 
-        public void Load(TaikoGameBase game)
+        public void Load(TaikoGameBase game, Screen _screen)
         {
             foreach (Screen screen in ScreenStack)
             {
-                screen.Load(game);
+                screen.Load(game, screen);
             }
 
             IsLoaded = true;

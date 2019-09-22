@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Taikoshin.Framework.Resources;
+using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Objects
 {
@@ -18,11 +19,11 @@ namespace Taikoshin.Framework.Objects
 
         Texture2D texture;
 
-        public override void Load(TaikoGameBase game)
+        public override void Load(TaikoGameBase game, Screen screen)
         {
             texture = m_fontStore[m_textureName];
 
-            base.Load(game);
+            base.Load(game, screen);
         }
 
         protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)

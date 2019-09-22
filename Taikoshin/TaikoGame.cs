@@ -13,7 +13,7 @@ namespace Taikoshin
     {
         protected override void Setup()
         {
-            screenManager.SetScreen(new MainScreen());
+            screenManager.SetScreen(new GameplayScreen());
         }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Taikoshin.Framework.Resources;
+using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Objects
 {
     public class GameObject : IDrawable, IUpdatable, ILoadable
     {
         public bool IsLoaded { get; private set; }
-        protected Game game;
+        protected TaikoGameBase game;
+        protected Screen screen;
 
         public Vector2 Position { get; set; } = new Vector2(0, 0);
         //public Vector2 Size { get => m_drawRect.Size.ToVector2(); set => m_drawRect.Size = value.ToPoint(); }
@@ -19,9 +22,10 @@ namespace Taikoshin.Framework.Objects
 
         protected virtual float ratio { get; } = 1;
 
-        public virtual void Load(TaikoGameBase game)
+        public virtual void Load(TaikoGameBase game, Screen screen)
         {
             this.game = game;
+            this.screen = screen;
 
             if(MaximumSize.X == -1 && MaximumSize.Y == -1)
                 MaximumSize = game.Window.ClientBounds.Size.ToVector2();
@@ -62,6 +66,14 @@ namespace Taikoshin.Framework.Objects
 
         void IDrawable.Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
             => Draw(spriteBatch, CalculateDrawRect(parent), gameTime);
+
+        protected virtual string GetDebugDataString()
+            => $"Position: {Position}";
+
+        public void DrawDebugData(SpriteBatch spriteBatch, Rectangle debugWindow, GameTime gameTime)
+        {
+            Fonts.MenuFont.DrawString(spriteBatch, GetDebugDataString(), debugWindow.Location.ToVector2(), Color.Black);
+        }
 
         protected virtual void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
