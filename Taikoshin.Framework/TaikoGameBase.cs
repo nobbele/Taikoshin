@@ -45,7 +45,7 @@ namespace Taikoshin.Framework
             Fonts.Load();
             Bass.Init();
 
-            screenManager.Load(this, null);
+            screenManager.Load(this, null, screenManager);
 
             Load();
         }

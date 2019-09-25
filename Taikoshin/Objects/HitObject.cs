@@ -8,6 +8,7 @@ using Taikoshin.Framework.Input;
 using Taikoshin.Framework.Objects;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
+using IDrawable = Taikoshin.Framework.Objects.IDrawable;
 
 namespace Taikoshin.Objects
 {
@@ -20,7 +21,7 @@ namespace Taikoshin.Objects
         public float Speed { get; set; } = 4000;
         public float HitLock { get; set; } = 1000;
 
-        float timeToObject => -(m_track.Position - m_hitTime);
+        float m_timeToObject => -(m_track.Position - m_hitTime);
 
         public HitObject(TextureStore textureStore, Track track, float hitTime, HitObjectType hitObjectType) : base(textureStore, "Duck")
         {
@@ -29,7 +30,7 @@ namespace Taikoshin.Objects
             m_hitObjectType = hitObjectType;
         }
 
-        public override void Load(TaikoGameBase game, Screen screen)
+        public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
             if (m_hitObjectType == HitObjectType.Don)
                 game.InputManager.OnDon += OnClick;
@@ -38,31 +39,32 @@ namespace Taikoshin.Objects
             else
                 throw new ArgumentException();
 
-            base.Load(game, screen);
+            base.Load(game, screen, parent);
         }
 
         private void OnClick()
         {
-            if (timeToObject <= HitLock)
+            if (m_timeToObject <= HitLock)
                 OnHit();
         }
 
         private void OnHit()
         {
-            Console.WriteLine($"Hit! {timeToObject}ms off");
+            Console.WriteLine($"Hit! {m_timeToObject}ms off");
             screen.Remove(this);
         }
 
-        public override Rectangle CalculateDrawRect(Rectangle parent)
+        public override void Update(GameTime gameTime)
         {
-            Rectangle rect = GetDefaultRect(parent);
+            float progress = m_timeToObject / Speed;
 
-            float progress = timeToObject / Speed;
-
-            rect.X += (int)(progress * game.Window.ClientBounds.Width);
-
-            return rect;
+            Position = new Vector2((int)(progress * parent.DrawRect.Width), 0);
         }
+
+        protected override string GetDebugDataString()
+            => $"{base.GetDebugDataString()}\n" +
+               $"Object hit time: {m_hitTime}\n" +
+               $"Time to object: {m_timeToObject}";
 
         public override void Unload()
         {

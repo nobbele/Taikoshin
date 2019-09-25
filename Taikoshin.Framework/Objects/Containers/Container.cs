@@ -6,37 +6,37 @@ using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Objects.Containers
 {
-    public class Container : GameObject, IContainer<GameObject>
+    public class Container<T> : GameObject, IContainer<T> where T : GameObject
     {
-        public IEnumerable<GameObject> Children => m_children;
-        List<GameObject> m_children { get; set; } = new List<GameObject>();
+        public IEnumerable<T> Children => m_children;
+        List<T> m_children { get; set; } = new List<T>();
 
         public Container(Screen screen) : base()
         {
             this.screen = screen;
         }
 
-        public void Add(GameObject child)
+        public void Add(T child)
         {
             m_children.Add(child);
             if (IsLoaded)
-                child.Load(game, screen);
+                child.Load(game, screen, parent);
 #if DEBUG
             Console.WriteLine($"Added a child of type {child.GetType().Name} to screen of type {screen.GetType().Name}");
 #endif
         }
 
-        public override void Load(TaikoGameBase game, Screen screen)
+        public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
             foreach (ILoadable child in Children)
             {
-                child.Load(game, screen);
+                child.Load(game, screen, parent);
             }
 
-            base.Load(game, screen);
+            base.Load(game, screen, parent);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
+        protected override void DoDraw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
             foreach(IDrawable child in Children)
             {
@@ -52,7 +52,7 @@ namespace Taikoshin.Framework.Objects.Containers
             }
         }
 
-        public void Remove(GameObject child)
+        public void Remove(T child)
         {
             m_children.Remove(child);
             child.Unload();

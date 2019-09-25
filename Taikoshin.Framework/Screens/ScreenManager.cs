@@ -10,12 +10,14 @@ namespace Taikoshin.Framework.Screens
 {
     public class ScreenManager : IDrawable, IUpdatable, ILoadable
     {
-        public bool IsLoaded { get; private set; }
         public Rectangle DrawRect => m_game.Window.ClientBounds;
 
+        public bool IsLoaded { get; private set; }
         public Queue<Screen> ScreenStack { get; private set; } = new Queue<Screen>();
 
         private readonly TaikoGameBase m_game;
+
+        private IDrawable m_parent;
 
         public ScreenManager(TaikoGameBase game)
         {
@@ -38,7 +40,7 @@ namespace Taikoshin.Framework.Screens
 
             // Load instantly if screen manager is already loaded
             if (IsLoaded)
-                screen.Load(m_game, screen);
+                screen.Load(m_game, screen, m_parent);
         }
 
         public void Pop()
@@ -47,11 +49,13 @@ namespace Taikoshin.Framework.Screens
             screen.Unload();
         }
 
-        public void Load(TaikoGameBase game, Screen _screen)
+        public void Load(TaikoGameBase game, Screen _screen, IDrawable parent)
         {
+            m_parent = parent;
+
             foreach (Screen screen in ScreenStack)
             {
-                screen.Load(game, screen);
+                screen.Load(game, screen, parent);
             }
 
             IsLoaded = true;
@@ -63,6 +67,11 @@ namespace Taikoshin.Framework.Screens
             {
                 screen.Update(gameTime);
             }
+        }
+
+        public void CalculateDrawRect(Rectangle parent)
+        {
+            throw new NotImplementedException();
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle rect, GameTime gameTime)

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using Taikoshin.Framework.Audio;
 using Taikoshin.Framework.Objects;
 using Taikoshin.Framework.Objects.Containers;
 using Taikoshin.Framework.Resources;
@@ -10,18 +11,13 @@ using IDrawable = Taikoshin.Framework.Objects.IDrawable;
 
 namespace Taikoshin.Framework.Screens
 {
-    public class Screen : IDrawable, IUpdatable, ILoadable
+    public class Screen : GameObject
     {
-        public bool IsLoaded { get; private set; }
-
-        protected TaikoGameBase game { get; private set; }
         protected TextureStore textureStore { get; private set; }
-
-        public Rectangle DrawRect => game.Window.ClientBounds;
 
         IContainer<GameObject> m_childContainer;
         List<IDisposable> m_disposables = new List<IDisposable>();
-        List<ILoadable> m_loadables = new List<ILoadable>();
+        List<ILoadableResource> m_loadableResources = new List<ILoadableResource>();
 
         public void Add(GameObject child)
         {
@@ -33,28 +29,28 @@ namespace Taikoshin.Framework.Screens
             m_disposables.Add(disposable);
         }
 
-        public void Contain(ILoadable loadable)
+        public void Contain(ILoadableResource loadable)
         {
-            m_loadables.Add(loadable);
+            m_loadableResources.Add(loadable);
         }
 
         public void Setup(TaikoGameBase game)
         {
             this.game = game;
 
-            m_childContainer = new Container(this);
+            m_childContainer = new Container<GameObject>(this);
             Contain(textureStore = new TextureStore(game.GraphicsDevice, Taikoshin.Resources.Textures.ResourceManager));
         }
 
-        public virtual void Load(TaikoGameBase game, Screen screen)
+        public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
-            m_childContainer.Load(game, screen);
-            for (int i = 0; i < m_loadables.Count; i++)
-                m_loadables[i].Load(game, screen);
-
-            IsLoaded = true;
+            m_childContainer.Load(game, this, this);
+            for (int i = 0; i < m_loadableResources.Count; i++)
+                m_loadableResources[i].Load();
 
             Start();
+
+            base.Load(game, screen, parent);
         }
 
         public virtual void Start()
@@ -62,12 +58,17 @@ namespace Taikoshin.Framework.Screens
 
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
+        public override void CalculateDrawRect(Rectangle parent)
+        {
+            DrawRect = game.Window.ClientBounds;
+        }
+
+        protected override void DoDraw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
         {
             m_childContainer.Draw(spriteBatch, DrawRect, gameTime);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             m_childContainer.Update(gameTime);
         }
@@ -77,16 +78,16 @@ namespace Taikoshin.Framework.Screens
             m_childContainer.Remove(child);
         }
 
-        public virtual void Unload()
+        public override void Unload()
         {
             m_childContainer.Unload();
             m_childContainer.Clear();
 
-            for (int i = 0; i < m_loadables.Count; i++)
-                m_loadables[i].Unload();
-            m_loadables.Clear();
+            for (int i = 0; i < m_loadableResources.Count; i++)
+                m_loadableResources[i].Unload();
+            m_loadableResources.Clear();
 
-            IsLoaded = false;
+            base.Unload();
         }
     }
 }

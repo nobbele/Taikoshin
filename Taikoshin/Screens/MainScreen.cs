@@ -11,22 +11,34 @@ using Taikoshin.Framework.Objects.Containers;
 using ManagedBass;
 using Taikoshin.Framework.Audio;
 using Taikoshin.Objects;
+using IDrawable = Taikoshin.Framework.Objects.IDrawable;
+using Taikoshin.Objects.Containers;
 
 namespace Taikoshin.Screens
 {
     public class GameplayScreen : Screen
     {
+        //HitObjectContainer hitObjectContainer;
         Text positionText;
 
         Track track;
 
-        public override void Load(TaikoGameBase game, Screen screen)
+        public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
             Contain(track = new Track("Honesty.mp3"));
 
             Bass.GlobalStreamVolume = 1000;
 
-            Add(new HitObject(textureStore, track, 5250, HitObjectType.Don)
+            /*Add(hitObjectContainer = new HitObjectContainer(this)
+            {
+                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 100),
+                Size = DrawingSize.XYMax,
+                ScalingMethod = ScalingMethod.DontKeepRatio,
+                Offset = new Vector2(100, 100),
+            });*/
+
+            //hitObjectContainer.
+                Add(new HitObject(textureStore, track, 5250, HitObjectType.Don)
             {
                 Origin = new Vector2(0.5f, 0.5f),
                 MinimumSize = new Vector2(100, 100),
@@ -34,9 +46,27 @@ namespace Taikoshin.Screens
                 ScalingMethod = ScalingMethod.KeepRatio,
             });
 
+            //hitObjectContainer.
+                Add(new HitObject(textureStore, track, 5558, HitObjectType.Don)
+            {
+                Origin = new Vector2(0.5f, 0.5f),
+                MinimumSize = new Vector2(100, 100),
+                Size = DrawingSize.XMin,
+                ScalingMethod = ScalingMethod.KeepRatio,
+            });
+
+            Add(new Sprite(textureStore, "Duck")
+            {
+                Origin = new Vector2(0.5f, 0.5f),
+                MinimumSize = new Vector2(100, 100),
+                Size = DrawingSize.XMin,
+                ScalingMethod = ScalingMethod.KeepRatio,
+                Offset = new Vector2(100, 100),
+            });
+
             Add(positionText = new Text(Fonts.MenuFont, "0"));
 
-            base.Load(game, screen);
+            base.Load(game, screen, parent);
         }
 
         public override void Update(GameTime gameTime)

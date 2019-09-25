@@ -7,7 +7,7 @@ using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Audio
 {
-    public class Track : ILoadable
+    public class Track : ILoadableResource
     {
         public bool IsLoaded { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Taikoshin.Framework.Audio
             TrackName = trackName;
         }
 
-        public void Load(TaikoGameBase game, Screen screen)
+        public void Load()
         {
             m_handle = Bass.CreateStream(TrackName);
 

@@ -11,7 +11,7 @@ namespace Taikoshin.Framework.Objects
         readonly TextureStore m_fontStore;
         readonly string m_textureName;
 
-        public Sprite(TextureStore fontStore, string textureName)
+        public Sprite(TextureStore fontStore, string textureName) : base()
         {
             m_fontStore = fontStore;
             m_textureName = textureName;
@@ -19,14 +19,14 @@ namespace Taikoshin.Framework.Objects
 
         Texture2D texture;
 
-        public override void Load(TaikoGameBase game, Screen screen)
+        public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
             texture = m_fontStore[m_textureName];
 
-            base.Load(game, screen);
+            base.Load(game, screen, parent);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
+        protected override void DoDraw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
             => spriteBatch.Draw(texture, drawRect, Color.White);
     }
 }

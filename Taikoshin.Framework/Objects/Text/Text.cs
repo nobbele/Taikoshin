@@ -19,7 +19,7 @@ namespace Taikoshin.Framework.Objects.Text
             contentSize = font.MeasureString(text);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
+        protected override void DoDraw(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
             spriteBatch.DrawString(m_font, Content, drawRect.Location.ToVector2(), Color.White);
         }
