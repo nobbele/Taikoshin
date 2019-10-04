@@ -22,6 +22,10 @@ namespace Taikoshin.Framework.Objects
         public Vector2 Origin { get; set; } = new Vector2(0, 0);
         public Vector2 Offset { get; set; } = new Vector2(0, 0);
 
+#if DEBUG
+        public bool DebugObject { get; set; } = false;
+#endif
+
         protected virtual float ratio { get; } = 1;
 
         private Texture2D panelPixel;
@@ -73,7 +77,7 @@ namespace Taikoshin.Framework.Objects
             if (drawRect.Height < MinimumSize.Y && MinimumSize.Y != -1)
                 drawRect.Height = (int)MinimumSize.Y;
 
-            drawRect.Location = Position.ToPoint();
+            drawRect.Location = Position.ToPoint() + parent.Location;
             drawRect.Location += Offset.ToPoint();
             drawRect.Location += (drawRect.Size.ToVector2() * -Origin).ToPoint(); // Origin
 
@@ -91,10 +95,12 @@ namespace Taikoshin.Framework.Objects
         {
             CalculateDrawRect(parent);
 
-            DoDraw(spriteBatch, DrawRect, gameTime);
 #if DEBUG
-            DrawDebugData(spriteBatch, DrawRect, gameTime);
+            if (DebugObject)
+                DrawDebugData(spriteBatch, DrawRect, gameTime);
 #endif
+
+            DoDraw(spriteBatch, DrawRect, gameTime);
         }
 
         protected virtual string GetDebugDataString()
@@ -102,6 +108,8 @@ namespace Taikoshin.Framework.Objects
 
         public void DrawDebugData(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {
+            spriteBatch.Draw(panelPixel, DrawRect, Color.Purple);
+
             string debugContent = GetDebugDataString();
 
             // Can't draw new line yet, to be fixed

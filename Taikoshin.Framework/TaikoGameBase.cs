@@ -61,7 +61,7 @@ namespace Taikoshin.Framework
 
             m_spriteBatch.Begin();
 
-            screenManager.Draw(m_spriteBatch, Window.ClientBounds, gameTime);
+            screenManager.Draw(m_spriteBatch, new Rectangle(new Point(0, 0), Window.ClientBounds.Size), gameTime);
 
             m_spriteBatch.End();
         }

@@ -18,7 +18,7 @@ namespace Taikoshin.Screens
 {
     public class GameplayScreen : Screen
     {
-        //HitObjectContainer hitObjectContainer;
+        HitObjectContainer container;
         Text positionText;
 
         Track track;
@@ -29,15 +29,16 @@ namespace Taikoshin.Screens
 
             Bass.GlobalStreamVolume = 1000;
 
-            /*Add(hitObjectContainer = new HitObjectContainer(this)
+            Add(container = new HitObjectContainer(this)
             {
-                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 100),
+                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 300),
                 Size = DrawingSize.XYMax,
                 ScalingMethod = ScalingMethod.DontKeepRatio,
                 Offset = new Vector2(100, 100),
-            });*/
+                DebugObject = true,
+            });
 
-            //hitObjectContainer.
+            container.
                 Add(new HitObject(textureStore, track, 5250, HitObjectType.Don)
             {
                 Origin = new Vector2(0.5f, 0.5f),
@@ -46,22 +47,13 @@ namespace Taikoshin.Screens
                 ScalingMethod = ScalingMethod.KeepRatio,
             });
 
-            //hitObjectContainer.
+            container.
                 Add(new HitObject(textureStore, track, 5558, HitObjectType.Don)
             {
                 Origin = new Vector2(0.5f, 0.5f),
                 MinimumSize = new Vector2(100, 100),
                 Size = DrawingSize.XMin,
                 ScalingMethod = ScalingMethod.KeepRatio,
-            });
-
-            Add(new Sprite(textureStore, "Duck")
-            {
-                Origin = new Vector2(0.5f, 0.5f),
-                MinimumSize = new Vector2(100, 100),
-                Size = DrawingSize.XMin,
-                ScalingMethod = ScalingMethod.KeepRatio,
-                Offset = new Vector2(100, 100),
             });
 
             Add(positionText = new Text(Fonts.MenuFont, "0"));

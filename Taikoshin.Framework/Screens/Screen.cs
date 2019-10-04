@@ -58,11 +58,6 @@ namespace Taikoshin.Framework.Screens
 
         }
 
-        public override void CalculateDrawRect(Rectangle parent)
-        {
-            DrawRect = game.Window.ClientBounds;
-        }
-
         protected override void DoDraw(SpriteBatch spriteBatch, Rectangle parent, GameTime gameTime)
         {
             m_childContainer.Draw(spriteBatch, DrawRect, gameTime);

@@ -10,7 +10,7 @@ namespace Taikoshin.Framework.Screens
 {
     public class ScreenManager : IDrawable, IUpdatable, ILoadable
     {
-        public Rectangle DrawRect => m_game.Window.ClientBounds;
+        public Rectangle DrawRect { get; private set; }
 
         public bool IsLoaded { get; private set; }
         public Queue<Screen> ScreenStack { get; private set; } = new Queue<Screen>();
@@ -71,11 +71,12 @@ namespace Taikoshin.Framework.Screens
 
         public void CalculateDrawRect(Rectangle parent)
         {
-            throw new NotImplementedException();
+            DrawRect = parent;
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle rect, GameTime gameTime)
         {
+            CalculateDrawRect(rect);
             foreach(Screen screen in ScreenStack)
             {
                 screen.Draw(spriteBatch, rect, gameTime);
