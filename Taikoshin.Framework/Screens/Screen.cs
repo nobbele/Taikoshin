@@ -15,7 +15,7 @@ namespace Taikoshin.Framework.Screens
     {
         public TextureStore TextureStore { get; private set; }
 
-        IContainer m_childContainer;
+        Container m_childContainer;
         List<IDisposable> m_disposables = new List<IDisposable>();
         List<ILoadableResource> m_loadableResources = new List<ILoadableResource>();
 

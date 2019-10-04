@@ -31,8 +31,8 @@ namespace Taikoshin.Screens
 
             Add(hitObjectContainer = new HitObjectContainer(this)
             {
-                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 150),
-                Size = DrawingSize.XYMax,
+                MinimumSize = new Vector2(-1, 150),
+                Size = DrawingSize.XMax | DrawingSize.YMin,
                 ScalingMethod = ScalingMethod.DontKeepRatio,
                 Offset = new Vector2(100, 100),
                 DebugObject = true,
@@ -42,7 +42,7 @@ namespace Taikoshin.Screens
             {
                 hitObjectContainer.Add(new HitObject(hitObjectContainer, TextureStore, track, 5250 + (308 * i), i, i % 4 == 0 ? HitObjectType.Don : HitObjectType.Katsu)
                 {
-                    Offset = new Vector2(100, 0),
+                    Offset = new Vector2(100, 25),
                     MinimumSize = new Vector2(100, 100),
                     Size = DrawingSize.XMin,
                     ScalingMethod = ScalingMethod.KeepRatio,

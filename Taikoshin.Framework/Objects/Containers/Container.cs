@@ -6,7 +6,7 @@ using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Objects.Containers
 {
-    public class Container : GameObject, IContainer
+    public class Container : GameObject
     {
         public IEnumerable<GameObject> Children => m_children;
         List<GameObject> m_children { get; set; } = new List<GameObject>();
@@ -17,8 +17,14 @@ namespace Taikoshin.Framework.Objects.Containers
         }
 
         public void Add(GameObject child)
+            => AddAt(m_children.Count, child);
+
+        /// <summary>
+        /// This is a slower method
+        /// </summary>
+        public void AddAt(int index, GameObject child)
         {
-            m_children.Add(child);
+            m_children.Insert(index, child);
             if (IsLoaded)
                 child.Load(game, screen, parent);
 #if DEBUG

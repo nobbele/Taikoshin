@@ -18,9 +18,9 @@ namespace Taikoshin.Objects.Containers
 
         public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
-            Add(new Sprite(screen.TextureStore, "Circle")
+            AddAt(0, new Sprite(screen.TextureStore, "Circle")
             {
-                Offset = new Vector2(100, 0),
+                Offset = new Vector2(100, 25),
                 MinimumSize = new Vector2(100, 100),
                 Size = DrawingSize.XMin,
                 ScalingMethod = ScalingMethod.KeepRatio,

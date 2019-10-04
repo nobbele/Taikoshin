@@ -16,11 +16,11 @@ namespace Taikoshin.Objects
 {
     public class HitObject : Sprite
     {
-        Track m_track;
-        float m_hitTime;
-        HitObjectType m_hitObjectType;
-        int m_index;
-        HitObjectContainer m_container;
+        readonly Track m_track;
+        readonly float m_hitTime;
+        readonly HitObjectType m_hitObjectType;
+        readonly int m_index;
+        readonly HitObjectContainer m_container;
 
         public float Speed { get; set; } = 4000;
         public float HitLock { get; set; } = 1000;

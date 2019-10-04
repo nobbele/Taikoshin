@@ -7,6 +7,7 @@ namespace Taikoshin.Framework.Objects.Containers
         IEnumerable<GameObject> Children { get; }
 
         void Add(GameObject child);
+        void AddAt(int index, GameObject child);
         void Remove(GameObject child);
         void Clear();
     }

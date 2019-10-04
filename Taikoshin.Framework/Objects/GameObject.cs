@@ -14,11 +14,10 @@ namespace Taikoshin.Framework.Objects
         protected IDrawable parent;
 
         public Vector2 Position { get; set; } = new Vector2(0, 0);
-        //public Vector2 Size { get => m_drawRect.Size.ToVector2(); set => m_drawRect.Size = value.ToPoint(); }
-        public Vector2 MinimumSize { get; set; } = new Vector2(0, 0);
+        public Vector2 MinimumSize { get; set; } = new Vector2(-1, -1);
         public Vector2 MaximumSize { get; set; } = new Vector2(-1, -1);
-        public DrawingSize Size { get; set; } = DrawingSize.XMax;
-        public ScalingMethod ScalingMethod { get; set; } = ScalingMethod.KeepRatio;
+        public DrawingSize Size { get; set; } = DrawingSize.XYMax;
+        public ScalingMethod ScalingMethod { get; set; } = ScalingMethod.DontKeepRatio;
         public Vector2 Origin { get; set; } = new Vector2(0, 0);
         public Vector2 Offset { get; set; } = new Vector2(0, 0);
 
