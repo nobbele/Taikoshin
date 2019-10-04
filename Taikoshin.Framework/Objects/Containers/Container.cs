@@ -6,17 +6,17 @@ using Taikoshin.Framework.Screens;
 
 namespace Taikoshin.Framework.Objects.Containers
 {
-    public class Container<T> : GameObject, IContainer<T> where T : GameObject
+    public class Container : GameObject, IContainer
     {
-        public IEnumerable<T> Children => m_children;
-        List<T> m_children { get; set; } = new List<T>();
+        public IEnumerable<GameObject> Children => m_children;
+        List<GameObject> m_children { get; set; } = new List<GameObject>();
 
         public Container(Screen screen) : base()
         {
             this.screen = screen;
         }
 
-        public void Add(T child)
+        public void Add(GameObject child)
         {
             m_children.Add(child);
             if (IsLoaded)
@@ -52,7 +52,7 @@ namespace Taikoshin.Framework.Objects.Containers
             }
         }
 
-        public void Remove(T child)
+        public void Remove(GameObject child)
         {
             m_children.Remove(child);
             child.Unload();

@@ -13,9 +13,9 @@ namespace Taikoshin.Framework.Screens
 {
     public class Screen : GameObject
     {
-        protected TextureStore textureStore { get; private set; }
+        public TextureStore TextureStore { get; private set; }
 
-        IContainer<GameObject> m_childContainer;
+        IContainer m_childContainer;
         List<IDisposable> m_disposables = new List<IDisposable>();
         List<ILoadableResource> m_loadableResources = new List<ILoadableResource>();
 
@@ -38,8 +38,8 @@ namespace Taikoshin.Framework.Screens
         {
             this.game = game;
 
-            m_childContainer = new Container<GameObject>(this);
-            Contain(textureStore = new TextureStore(game.GraphicsDevice, Taikoshin.Resources.Textures.ResourceManager));
+            m_childContainer = new Container(this);
+            Contain(TextureStore = new TextureStore(game.GraphicsDevice, Taikoshin.Resources.Textures.ResourceManager));
         }
 
         public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)

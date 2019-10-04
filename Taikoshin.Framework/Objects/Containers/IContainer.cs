@@ -2,13 +2,12 @@
 
 namespace Taikoshin.Framework.Objects.Containers
 {
-    public interface IContainer<T> : IDrawable, IUpdatable, ILoadable
-        where T : GameObject
+    public interface IContainer : IDrawable, IUpdatable, ILoadable
     {
-        IEnumerable<T> Children { get; }
+        IEnumerable<GameObject> Children { get; }
 
-        void Add(T child);
-        void Remove(T child);
+        void Add(GameObject child);
+        void Remove(GameObject child);
         void Clear();
     }
 }

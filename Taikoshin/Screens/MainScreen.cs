@@ -18,7 +18,7 @@ namespace Taikoshin.Screens
 {
     public class GameplayScreen : Screen
     {
-        HitObjectContainer container;
+        HitObjectContainer hitObjectContainer;
         Text positionText;
 
         Track track;
@@ -29,32 +29,25 @@ namespace Taikoshin.Screens
 
             Bass.GlobalStreamVolume = 1000;
 
-            Add(container = new HitObjectContainer(this)
+            Add(hitObjectContainer = new HitObjectContainer(this)
             {
-                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 300),
+                MaximumSize = new Vector2(game.Window.ClientBounds.Width - 100, 150),
                 Size = DrawingSize.XYMax,
                 ScalingMethod = ScalingMethod.DontKeepRatio,
                 Offset = new Vector2(100, 100),
                 DebugObject = true,
             });
 
-            container.
-                Add(new HitObject(textureStore, track, 5250, HitObjectType.Don)
+            for(int i = 0; i < 20; i++)
             {
-                Origin = new Vector2(0.5f, 0.5f),
-                MinimumSize = new Vector2(100, 100),
-                Size = DrawingSize.XMin,
-                ScalingMethod = ScalingMethod.KeepRatio,
-            });
-
-            container.
-                Add(new HitObject(textureStore, track, 5558, HitObjectType.Don)
-            {
-                Origin = new Vector2(0.5f, 0.5f),
-                MinimumSize = new Vector2(100, 100),
-                Size = DrawingSize.XMin,
-                ScalingMethod = ScalingMethod.KeepRatio,
-            });
+                hitObjectContainer.Add(new HitObject(hitObjectContainer, TextureStore, track, 5250 + (308 * i), i, i % 4 == 0 ? HitObjectType.Don : HitObjectType.Katsu)
+                {
+                    Offset = new Vector2(100, 0),
+                    MinimumSize = new Vector2(100, 100),
+                    Size = DrawingSize.XMin,
+                    ScalingMethod = ScalingMethod.KeepRatio,
+                });
+            }
 
             Add(positionText = new Text(Fonts.MenuFont, "0"));
 

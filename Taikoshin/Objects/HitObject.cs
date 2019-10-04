@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Taikoshin.Framework;
 using Taikoshin.Framework.Audio;
 using Taikoshin.Framework.Input;
 using Taikoshin.Framework.Objects;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
+using Taikoshin.Objects.Containers;
 using IDrawable = Taikoshin.Framework.Objects.IDrawable;
 
 namespace Taikoshin.Objects
@@ -17,17 +19,23 @@ namespace Taikoshin.Objects
         Track m_track;
         float m_hitTime;
         HitObjectType m_hitObjectType;
+        int m_index;
+        HitObjectContainer m_container;
 
         public float Speed { get; set; } = 4000;
         public float HitLock { get; set; } = 1000;
 
         float m_timeToObject => -(m_track.Position - m_hitTime);
 
-        public HitObject(TextureStore textureStore, Track track, float hitTime, HitObjectType hitObjectType) : base(textureStore, "Duck")
+        public HitObject(HitObjectContainer container, TextureStore textureStore, Track track, float hitTime, int index, HitObjectType hitObjectType) : base(textureStore, "Circle")
         {
+            m_container = container;
             m_track = track;
             m_hitTime = hitTime;
+            m_index = index;
             m_hitObjectType = hitObjectType;
+
+            Color = m_hitObjectType == HitObjectType.Don ? Color.Red : Color.Blue;
         }
 
         public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
@@ -44,14 +52,15 @@ namespace Taikoshin.Objects
 
         private void OnClick()
         {
-            if (m_timeToObject <= HitLock)
-                OnHit();
+            if (m_timeToObject <= HitLock && m_container.NextIndex == m_index)
+                game.EndOfFrame.Enqueue(OnHit);
         }
 
         private void OnHit()
         {
             Console.WriteLine($"Hit! {m_timeToObject}ms off");
-            screen.Remove(this);
+            m_container.Remove(this);
+            m_container.NextIndex += 1;
         }
 
         public override void Update(GameTime gameTime)

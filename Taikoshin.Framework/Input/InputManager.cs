@@ -23,7 +23,14 @@ namespace Taikoshin.Framework.Input
             Buttons.X, Buttons.Y
         };
 
+        private bool m_donDown = false;
+
         public event Action OnDon;
+        private void Don()
+        {
+            m_donDown = true;
+            OnDon?.Invoke();
+        }
 
         public Keys[] KatsuKeys { get; set; } = new Keys[]
         {
@@ -34,7 +41,14 @@ namespace Taikoshin.Framework.Input
             Buttons.A, Buttons.B
         };
 
+        private bool m_katsuDown = false;
+
         public event Action OnKatsu;
+        private void Katsu()
+        {
+            m_katsuDown = true;
+            OnKatsu?.Invoke();
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -65,9 +79,19 @@ namespace Taikoshin.Framework.Input
             }
 
             if (keys.Any(DonKeys.Contains) || donButtonDown)
-                OnDon?.Invoke();
+            {
+                if (!m_donDown)
+                    Don();
+            }
+            else
+                m_donDown = false;
             if (keys.Any(KatsuKeys.Contains) || katsuButtonDown)
-                OnKatsu?.Invoke();
+            {
+                if (!m_katsuDown)
+                    Katsu();
+            }
+            else
+                m_katsuDown = false;
         }
     }
 }

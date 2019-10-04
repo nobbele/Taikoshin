@@ -1,6 +1,8 @@
 ﻿using ManagedBass;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using Taikoshin.Framework.Input;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
@@ -13,6 +15,7 @@ namespace Taikoshin.Framework
         SpriteBatch m_spriteBatch;
 
         public InputManager InputManager { get; set; }
+        public Queue<Action> EndOfFrame { get; set; }
 
         protected ScreenManager screenManager { get; set; }
 
@@ -30,6 +33,7 @@ namespace Taikoshin.Framework
 
         protected sealed override void Initialize()
         {
+            EndOfFrame = new Queue<Action>();
             screenManager = new ScreenManager(this);
             InputManager = new InputManager();
 
@@ -70,6 +74,9 @@ namespace Taikoshin.Framework
         {
             InputManager.Update(gameTime);
             screenManager.Update(gameTime);
+
+            while(EndOfFrame.Count > 0)
+                EndOfFrame.Dequeue()?.Invoke();
         }
 
         protected sealed override void UnloadContent()
