@@ -22,8 +22,9 @@ namespace Taikoshin.Objects
         readonly int m_index;
         readonly HitObjectContainer m_container;
 
-        public float Speed { get; set; } = 4000;
-        public float HitLock { get; set; } = 1000;
+        public float Speed { get; set; } = 1000;
+        public float HitLock { get; set; } = 500;
+        public float MissTime { get; set; } = 50;
 
         float m_timeToObject => -(m_track.Position - m_hitTime);
 
@@ -63,11 +64,21 @@ namespace Taikoshin.Objects
             m_container.NextIndex += 1;
         }
 
+        private void OnMiss()
+        {
+            Console.WriteLine($"Miss!");
+            m_container.Remove(this);
+            m_container.NextIndex += 1;
+        }
+
         public override void Update(GameTime gameTime)
         {
             float progress = m_timeToObject / Speed;
 
             Position = new Vector2((int)(progress * parent.DrawRect.Width), 0);
+
+            if (m_timeToObject <= -MissTime)
+                game.EndOfFrame.Enqueue(OnMiss);
         }
 
         protected override string GetDebugDataString()

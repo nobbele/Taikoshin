@@ -38,9 +38,9 @@ namespace Taikoshin.Screens
                 DebugObject = true,
             });
 
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < 40; i++)
             {
-                hitObjectContainer.Add(new HitObject(hitObjectContainer, TextureStore, track, 5250 + (308 * i), i, i % 4 == 0 ? HitObjectType.Don : HitObjectType.Katsu)
+                hitObjectContainer.Add(new HitObject(hitObjectContainer, TextureStore, track, 5250 + (185f / 60 / 32 * 1000 * i), i, i % 4 == 0 ? HitObjectType.Don : HitObjectType.Katsu)
                 {
                     Offset = new Vector2(100, 25),
                     MinimumSize = new Vector2(100, 100),
