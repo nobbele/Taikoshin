@@ -5,10 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Taikoshin.Framework;
 using Taikoshin.Framework.Audio;
+using Taikoshin.Framework.Bindables;
 using Taikoshin.Framework.Input;
 using Taikoshin.Framework.Objects;
 using Taikoshin.Framework.Resources;
 using Taikoshin.Framework.Screens;
+using Taikoshin.Map;
 using Taikoshin.Objects.Containers;
 using IDrawable = Taikoshin.Framework.Objects.IDrawable;
 
@@ -16,34 +18,35 @@ namespace Taikoshin.Objects
 {
     public class HitObject : Sprite
     {
-        readonly Track m_track;
+        public int Index { get; }
+
+        readonly Bindable<float> m_trackPosition = new Bindable<float>();
         readonly float m_hitTime;
-        readonly HitObjectType m_hitObjectType;
-        readonly int m_index;
+        readonly NoteType m_hitObjectType;
         readonly HitObjectContainer m_container;
 
-        public float Speed { get; set; } = 1000;
+        public float Speed { get; set; } = 2000;
         public float HitLock { get; set; } = 500;
         public float MissTime { get; set; } = 50;
 
-        float m_timeToObject => -(m_track.Position - m_hitTime);
+        float m_timeToObject => -(m_trackPosition.Value - m_hitTime);
 
-        public HitObject(HitObjectContainer container, TextureStore textureStore, Track track, float hitTime, int index, HitObjectType hitObjectType) : base(textureStore, "Circle")
+        public HitObject(HitObjectContainer container, TextureStore textureStore, IBindable<float> trackPosition, float hitTime, int index, NoteType hitObjectType) : base(textureStore, "Circle")
         {
             m_container = container;
-            m_track = track;
+            m_trackPosition.BindDataFrom(trackPosition);
             m_hitTime = hitTime;
-            m_index = index;
+            Index = index;
             m_hitObjectType = hitObjectType;
 
-            Color = m_hitObjectType == HitObjectType.Don ? Color.Red : Color.Blue;
+            Color = m_hitObjectType == NoteType.Don ? Color.Red : Color.Blue;
         }
 
         public override void Load(TaikoGameBase game, Screen screen, IDrawable parent)
         {
-            if (m_hitObjectType == HitObjectType.Don)
+            if (m_hitObjectType == NoteType.Don)
                 game.InputManager.OnDon += OnClick;
-            else if (m_hitObjectType == HitObjectType.Katsu)
+            else if (m_hitObjectType == NoteType.Katsu)
                 game.InputManager.OnKatsu += OnClick;
             else
                 throw new ArgumentException();
@@ -53,7 +56,7 @@ namespace Taikoshin.Objects
 
         private void OnClick()
         {
-            if (m_timeToObject <= HitLock && m_container.NextIndex == m_index)
+            if (m_timeToObject <= HitLock && m_container.NextIndex == Index)
                 game.EndOfFrame.Enqueue(OnHit);
         }
 
@@ -75,7 +78,7 @@ namespace Taikoshin.Objects
         {
             float progress = m_timeToObject / Speed;
 
-            Position = new Vector2((int)(progress * parent.DrawRect.Width), 0);
+            Offset = new Vector2((int)(progress * parent.DrawRect.Width), 25);
 
             if (m_timeToObject <= -MissTime)
                 game.EndOfFrame.Enqueue(OnMiss);
@@ -88,19 +91,14 @@ namespace Taikoshin.Objects
 
         public override void Unload()
         {
-            if (m_hitObjectType == HitObjectType.Don)
+            if (m_hitObjectType == NoteType.Don)
                 game.InputManager.OnDon -= OnClick;
-            else if (m_hitObjectType == HitObjectType.Katsu)
+            else if (m_hitObjectType == NoteType.Katsu)
                 game.InputManager.OnKatsu -= OnClick;
             else
                 throw new ArgumentException();
 
             base.Unload();
         }
-    }
-
-    public enum HitObjectType
-    {
-        Don, Katsu
     }
 }

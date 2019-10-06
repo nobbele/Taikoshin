@@ -13,7 +13,7 @@ namespace Taikoshin.Framework.Objects
         protected Screen screen;
         protected IDrawable parent;
 
-        public Vector2 Position { get; set; } = new Vector2(0, 0);
+        public Vector2 LocalPosition { get; set; } = new Vector2(0, 0);
         public Vector2 MinimumSize { get; set; } = new Vector2(-1, -1);
         public Vector2 MaximumSize { get; set; } = new Vector2(-1, -1);
         public DrawingSize Size { get; set; } = DrawingSize.XYMax;
@@ -46,7 +46,7 @@ namespace Taikoshin.Framework.Objects
 
         protected Rectangle GetDefaultRect(Rectangle parent)
         {
-            Rectangle drawRect = new Rectangle(Position.ToPoint(), new Point(0, 0));
+            Rectangle drawRect = new Rectangle();
 
             if (Size.HasFlag(DrawingSize.XMin))
                 drawRect.Width = (int)MinimumSize.X;
@@ -76,7 +76,7 @@ namespace Taikoshin.Framework.Objects
             if (drawRect.Height < MinimumSize.Y && MinimumSize.Y != -1)
                 drawRect.Height = (int)MinimumSize.Y;
 
-            drawRect.Location = Position.ToPoint() + parent.Location;
+            drawRect.Location = LocalPosition.ToPoint() + parent.Location;
             drawRect.Location += Offset.ToPoint();
             drawRect.Location += (drawRect.Size.ToVector2() * -Origin).ToPoint(); // Origin
 
@@ -103,7 +103,7 @@ namespace Taikoshin.Framework.Objects
         }
 
         protected virtual string GetDebugDataString()
-            => $"Position: {Position}";
+            => $"Position: {LocalPosition}";
 
         public void DrawDebugData(SpriteBatch spriteBatch, Rectangle drawRect, GameTime gameTime)
         {

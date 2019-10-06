@@ -9,6 +9,7 @@ namespace Taikoshin.Framework.Objects.Containers
     public class Container : GameObject
     {
         public IEnumerable<GameObject> Children => m_children;
+        public int ChildCount => m_children.Count;
         List<GameObject> m_children { get; set; } = new List<GameObject>();
 
         public Container(Screen screen) : base()

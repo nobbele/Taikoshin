@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Taikoshin.Framework.Bindables;
 using Taikoshin.Framework.Objects;
 using Taikoshin.Framework.Screens;
 
@@ -13,6 +14,7 @@ namespace Taikoshin.Framework.Audio
 
         public string TrackName { get; private set; }
 
+        public ConstantBindable<float> PositionBindable { get; }
         public float Position => (float)Bass.ChannelBytes2Seconds(m_handle, Bass.ChannelGetPosition(m_handle)) * 1000;
 
         private int m_handle = -1;
@@ -20,6 +22,8 @@ namespace Taikoshin.Framework.Audio
         public Track(string trackName)
         {
             TrackName = trackName;
+
+            PositionBindable = new ConstantBindable<float>(() => Position);
         }
 
         public void Load()
