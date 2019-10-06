@@ -25,7 +25,7 @@ namespace Taikoshin.Objects
         readonly NoteType m_hitObjectType;
         readonly HitObjectContainer m_container;
 
-        public float Speed { get; set; } = 2000;
+        public float Speed { get; set; } = 1500;
         public float HitLock { get; set; } = 500;
         public float MissTime { get; set; } = 50;
 

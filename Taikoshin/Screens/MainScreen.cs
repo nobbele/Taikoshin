@@ -42,24 +42,22 @@ namespace Taikoshin.Screens
 
             hitObjectContainer.Track.BindDataFrom(track);
 
+            int offset = 269;
+
             hitObjectContainer.AddNoteRange(new Note[]
             {
-                new Note(1000, NoteType.Don),
-                new Note(2000, NoteType.Don),
-                new Note(3000, NoteType.Katsu),
-                new Note(4000, NoteType.Katsu),
+                new Note(5343 + offset, NoteType.Don),
+                new Note(5424 + offset, NoteType.Don),
+                new Note(5505 + offset, NoteType.Don),
+                new Note(5829 + offset, NoteType.Katsu),
+                new Note(6153 + offset, NoteType.Don),
+                new Note(6477 + offset, NoteType.Don),
+                new Note(6801 + offset, NoteType.Don),
+                new Note(7126 + offset, NoteType.Katsu),
+                new Note(7612 + offset, NoteType.Don),
+                new Note(7937 + offset, NoteType.Don),
+                new Note(8423 + offset, NoteType.Don),
             });
-
-            /*for(int i = 0; i < 40; i++)
-            {
-                hitObjectContainer.Add(new HitObject(hitObjectContainer, TextureStore, track, 5250 + (185f / 60 / 32 * 1000 * i), i, i % 4 == 0 ? NoteType.Don : NoteType.Katsu)
-                {
-                    Offset = new Vector2(100, 25),
-                    MinimumSize = new Vector2(100, 100),
-                    Size = DrawingSize.XMin,
-                    ScalingMethod = ScalingMethod.KeepRatio,
-                });
-            }*/
 
             Add(positionText = new Text(Fonts.MenuFont, "0"));
 
